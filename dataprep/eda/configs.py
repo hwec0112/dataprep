@@ -144,6 +144,8 @@ class Hist(BaseModel):
         Number of bins in the histogram
     yscale: str, default "linear"
         Y-axis scale ("linear" or "log")
+    color: str, default "#aec7e8"
+        Color of the histogram
     height: int, default "auto"
         Height of the plot
     width: int, default "auto"
@@ -153,6 +155,7 @@ class Hist(BaseModel):
     enable: bool = True
     bins: int = 50
     yscale: str = "linear"
+    color: str = "#aec7e8"
     height: Union[int, None] = None
     width: Union[int, None] = None
 
@@ -160,11 +163,12 @@ class Hist(BaseModel):
         """
         how-to guide for plot(df, x)
         """
-        vals = [self.bins, self.yscale, height, width]
-        names = ["hist.bins", "hist.yscale", "height", "width"]
+        vals = [self.bins, self.yscale, self.color, height, width]
+        names = ["hist.bins", "hist.yscale", "hist.color", "height", "width"]
         descs = [
             "Number of bins in the histogram",
             'Y-axis scale ("linear" or "log")',
+            "Color",
             "Height of the plot",
             "Width of the plot",
         ]
@@ -174,9 +178,9 @@ class Hist(BaseModel):
         """
         how-to guide for plot(df)
         """
-        vals = [self.bins, self.yscale]
-        names = ["hist.bins", "hist.yscale"]
-        descs = ["Number of bins in the histogram", 'Y-axis scale ("linear" or "log")']
+        vals = [self.bins, self.yscale, self.color]
+        names = ["hist.bins", "hist.yscale", "hist.color"]
+        descs = ["Number of bins in the histogram", 'Y-axis scale ("linear" or "log")', "Color"]
         return [(f"'{name}': {_form(val)}", desc) for name, val, desc in zip(names, vals, descs)]
 
 
@@ -190,6 +194,8 @@ class Bar(BaseModel):
         Whether to sort the bars in descending order
     yscale: str, default "linear"
         Y-axis scale ("linear" or "log")
+    color: str, default "#1f77b4"
+        Color of the bar chart
     height: int, default "auto"
         Height of the plot
     width: int, default "auto"
@@ -200,6 +206,7 @@ class Bar(BaseModel):
     bars: int = 10
     sort_descending: bool = True
     yscale: str = "linear"
+    color: str = "#1f77b4"
     height: Union[int, None] = None
     width: Union[int, None] = None
 
@@ -207,12 +214,13 @@ class Bar(BaseModel):
         """
         how-to guide for plot(df, x)
         """
-        vals = [self.bars, self.sort_descending, self.yscale, height, width]
-        names = ["bar.bars", "bar.sort_descending", "bar.yscale", "height", "width"]
+        vals = [self.bars, self.sort_descending, self.yscale, self.color, height, width]
+        names = ["bar.bars", "bar.sort_descending", "bar.yscale", "bar.color", "height", "width"]
         descs = [
             "Maximum number of bars to display",
             "Whether to sort the bars in descending order",
             'Y-axis scale ("linear" or "log")',
+            "Color",
             "Height of the plot",
             "Width of the plot",
         ]
@@ -249,6 +257,10 @@ class KDE(BaseModel):
         Number of bins in the histogram
     yscale: str, default "linear"
         Y-axis scale ("linear" or "log")
+    hist_color: str, default "#aec7e8"
+        Color of the density histogram
+    line_color: str, default "#d62728
+        Color of the density line
     height: int, default "auto"
         Height of the plot
     width: int, default "auto"
@@ -258,6 +270,8 @@ class KDE(BaseModel):
     enable: bool = True
     bins: int = 50
     yscale: str = "linear"
+    hist_color: str = "#aec7e8"
+    line_color: str = "#d62728"
     width: Union[int, None] = None
     height: Union[int, None] = None
 
@@ -265,11 +279,13 @@ class KDE(BaseModel):
         """
         how-to guide for plot(df, x)
         """
-        vals = [self.bins, self.yscale, height, width]
-        names = ["kde.bins", "hist.yscale", "height", "width"]
+        vals = [self.bins, self.yscale, self.hist_color, self.line_color, height, width]
+        names = ["kde.bins", "kde.yscale", "kde.hist_color", "kde.line_color", "height", "width"]
         descs = [
             "Number of bins in the histogram",
             'Y-axis scale ("linear" or "log")',
+            "Color of the density histogram",
+            "Color of the density line",
             "Height of the plot",
             "Width of the plot",
         ]
@@ -280,6 +296,10 @@ class QQNorm(BaseModel):
     """
     enable: bool, default True
         Whether to create this element
+    point_color: str, default "#1f77b4"
+        Color of the density histogram
+    line_color: str, default "#d62728
+        Color of the density line
     height: int, default "auto"
         Height of the plot
     width: int, default "auto"
@@ -287,6 +307,8 @@ class QQNorm(BaseModel):
     """
 
     enable: bool = True
+    point_color: str = "#1f77b4"
+    line_color: str = "#d62728"
     height: Union[int, None] = None
     width: Union[int, None] = None
 
@@ -294,9 +316,14 @@ class QQNorm(BaseModel):
         """
         how-to guide for plot(df, x)
         """
-        vals = [height, width]
-        names = ["height", "width"]
-        descs = ["Height of the plot", "Width of the plot"]
+        vals = [self.point_color, self.line_color, height, width]
+        names = ["qqnorm.point_color", "qqnorm.line_color", "height", "width"]
+        descs = [
+            "Color of the points",
+            "Color of the line",
+            "Height of the plot",
+            "Width of the plot",
+        ]
         return [(f"'{name}': {val}", desc) for name, val, desc in zip(names, vals, descs)]
 
 
@@ -315,6 +342,8 @@ class Box(BaseModel):
         time unit such that the resulting number of groups is closest to 15
     sort_descending: bool, default True
         Whether to sort the boxes in descending order of frequency
+    color: str, default "#d62728
+        Color of the box_plot
     height: int, default "auto"
         Height of the plot
     width: int, default "auto"
@@ -326,6 +355,7 @@ class Box(BaseModel):
     bins: int = 50
     unit: str = "auto"
     sort_descending: bool = True
+    color: str = "#1f77b4"
     width: Union[int, None] = None
     height: Union[int, None] = None
 
@@ -333,9 +363,9 @@ class Box(BaseModel):
         """
         how-to guide for plot(df, x)
         """
-        vals = [height, width]
-        names = ["height", "width"]
-        descs = ["Height of the plot", "Width of the plot"]
+        vals = [self.color, height, width]
+        names = ["box.color", "height", "width"]
+        descs = ["Color", "Height of the plot", "Width of the plot"]
         return [(f"'{name}': {val}", desc) for name, val, desc in zip(names, vals, descs)]
 
     def nom_cont_how_to_guide(self, height: int, width: int) -> List[Tuple[str, str]]:
@@ -370,6 +400,8 @@ class Pie(BaseModel):
         Maximum number of pie slices to display
     sort_descending: bool, default True
         Whether to sort the slices in descending order of frequency
+    colors: Optional[List[str]], default None
+        List of colors
     height: int, default "auto"
         Height of the plot
     width: int, default "auto"
@@ -379,18 +411,20 @@ class Pie(BaseModel):
     enable: bool = True
     slices: int = 10
     sort_descending: bool = True
+    colors: Optional[List[str]] = None
     width: Union[int, None] = None
     height: Union[int, None] = None
 
-    def how_to_guide(self, height: int, width: int) -> List[Tuple[str, str]]:
+    def how_to_guide(self, color_list: List[str], height: int, width: int) -> List[Tuple[str, str]]:
         """
         how-to guide for plot(df, x)
         """
-        vals = [self.slices, self.sort_descending, height, width]
-        names = ["pie.slices", "pie.sort_descending", "height", "width"]
+        vals = [self.slices, self.sort_descending, color_list, height, width]
+        names = ["pie.slices", "pie.sort_descending", "pie.colors", "height", "width"]
         descs = [
             "Maximum number of pie slices to display",
             "Whether to sort the slices in descending order of frequency",
+            "List of colors",
             "Height of the plot",
             "Width of the plot",
         ]
@@ -455,6 +489,8 @@ class WordFrequency(BaseModel):
         Whether to lemmatize the words
     stem: bool, default False
         Whether to apply Potter Stem on the words
+    color: str, default "#1f77b4"
+        Color of the bar chart
     """
 
     enable: bool = True
@@ -462,6 +498,7 @@ class WordFrequency(BaseModel):
     stopword: bool = True
     lemmatize: bool = False
     stem: bool = False
+    color: str = "#1f77b4"
     width: Union[int, None] = None
     height: Union[int, None] = None
 
@@ -469,12 +506,13 @@ class WordFrequency(BaseModel):
         """
         how-to guide for plot(df, x)
         """
-        vals = [self.top_words, self.stopword, self.lemmatize, self.stem, height, width]
+        vals = [self.top_words, self.stopword, self.lemmatize, self.stem, self.color, height, width]
         names = [
             "wordfreq.top_words",
             "wordfreq.stopword",
             "wordfreq.lemmatize",
             "wordfreq.stem",
+            "wordfreq.color",
             "height",
             "width",
         ]
@@ -483,6 +521,7 @@ class WordFrequency(BaseModel):
             "Whether to remove stopwords",
             "Whether to lemmatize the words",
             "Whether to apply Potter Stem on the words",
+            "Color",
             "Height of the plot",
             "Width of the plot",
         ]
@@ -497,6 +536,8 @@ class WordLength(BaseModel):
         Number of bins in the histogram
     yscale: str, default "linear"
         Y-axis scale ("linear" or "log")
+    color: str, default "#aec7e8"
+        Color of the histogram
     height: int, default "auto"
         Height of the plot
     width: int, default "auto"
@@ -506,6 +547,7 @@ class WordLength(BaseModel):
     enable: bool = True
     bins: int = 50
     yscale: str = "linear"
+    color: str = "#aec7e8"
     width: Union[int, None] = None
     height: Union[int, None] = None
 
@@ -513,11 +555,12 @@ class WordLength(BaseModel):
         """
         how-to guide for plot(df, x)
         """
-        vals = [self.bins, self.yscale, height, width]
-        names = ["wordlen.bins", "wordlen.yscale", "height", "width"]
+        vals = [self.bins, self.yscale, self.color, height, width]
+        names = ["wordlen.bins", "wordlen.yscale", "wordlen.color", "height", "width"]
         descs = [
             "Number of bins in the histogram",
             'Y-axis scale ("linear" or "log")',
+            "Color",
             "Height of the plot",
             "Width of the plot",
         ]
